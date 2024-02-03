@@ -1,8 +1,10 @@
 package com.figueroa.valentines.screens.main
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,11 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -34,9 +37,12 @@ import com.figueroa.valentines.ui.theme.dancingScriptFamily
 
 @Composable
 fun WillBeMyValentineScreen(navController: NavHostController) {
-    var currentTextIndex by remember { mutableStateOf(0) }
-    var buttonScale by remember { mutableStateOf(1f) }
+    var currentTextIndex by rememberSaveable { mutableStateOf(0) }
+    var buttonScale by rememberSaveable { mutableStateOf(1f) }
     val noQuestions = stringArrayResource(id = R.array.no_questions)
+
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
     Box(modifier = Modifier.fillMaxSize()) {
         // Imagen en 3/4 de la pantalla
         Box(
@@ -76,44 +82,85 @@ fun WillBeMyValentineScreen(navController: NavHostController) {
                 .fillMaxHeight(0.25f) // 25% de la altura total
                 .align(Alignment.BottomCenter),
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Button(
+            if (isPortrait) {
+                Column(
                     modifier = Modifier
-                        .padding(vertical = 16.dp)
-                        .scale(buttonScale),
-                    onClick = {
-                        navController.navigate(AppScreens.SheAcceptBeMyValentine.javaClass.simpleName)
-                        currentTextIndex = 0
-                        buttonScale = 1f
-                    },
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.yes_button),
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = dancingScriptFamily,
-                    )
+                    Button(
+                        modifier = Modifier
+                            .padding(vertical = 16.dp)
+                            .scale(buttonScale),
+                        onClick = {
+                            navController.navigate(AppScreens.SheAcceptBeMyValentine.javaClass.simpleName)
+                            currentTextIndex = 0
+                            buttonScale = 1f
+                        },
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.yes_button),
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = dancingScriptFamily,
+                        )
+                    }
+                    Button(
+                        modifier = Modifier
+                            .padding(vertical = 16.dp),
+                        onClick = {
+                            if (currentTextIndex < noQuestions.size - 1) {
+                                currentTextIndex++
+                                buttonScale += 0.1f
+                            }
+                        },
+                    ) {
+                        Text(
+                            text = noQuestions[currentTextIndex],
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = dancingScriptFamily,
+                        )
+                    }
                 }
-                Button(
+            } else {
+                Row(
                     modifier = Modifier
-                        .padding(vertical = 16.dp),
-                    onClick = {
-                        if (currentTextIndex < noQuestions.size - 1) {
-                            currentTextIndex++
-                            buttonScale += 0.1f
-                        }
-                    },
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(
-                        text = noQuestions[currentTextIndex],
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = dancingScriptFamily,
-                    )
+                    Button(
+                        modifier = Modifier
+                            .padding(horizontal = 32.dp)
+                            .scale(buttonScale),
+                        onClick = {
+                            navController.navigate(AppScreens.SheAcceptBeMyValentine.javaClass.simpleName)
+                            currentTextIndex = 0
+                            buttonScale = 1f
+                        },
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.yes_button),
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = dancingScriptFamily,
+                        )
+                    }
+                    Button(
+                        modifier = Modifier
+                            .padding(horizontal = 32.dp),
+                        onClick = {
+                            if (currentTextIndex < noQuestions.size - 1) {
+                                currentTextIndex++
+                                buttonScale += 0.1f
+                            }
+                        },
+                    ) {
+                        Text(
+                            text = noQuestions[currentTextIndex],
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = dancingScriptFamily,
+                        )
+                    }
                 }
             }
         }

@@ -69,7 +69,7 @@ fun SheAcceptBeMyValentine(navController: NavHostController) {
                 .wrapContentWidth(),
         ) {
             Text(
-                text = "Send Love",
+                text = "I love you",
                 fontWeight = FontWeight.Bold,
                 fontFamily = dancingScriptFamily,
             )
