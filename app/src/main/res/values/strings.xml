@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Valentine\'s</string>
+    <string name="question">Will you be my valentine?</string>
+    <string name="yes_button">Yes</string>
+    <string-array name="no_questions">
+        <item>No</item>
+        <item>Are you sure?</item>
+        <item>Really sure?</item>
+        <item>Think again!</item>
+        <item>Last chance!</item>
+        <item>Surely not?</item>
+        <item>You might regret this!</item>
+        <item>Give it another thought!</item>
+        <item>Are you absolutely certain?</item>
+        <item>This could be a mistake!</item>
+        <item>Have a heart!</item>
+        <item>Don\'t be so cold!</item>
+        <item>Change of heart?</item>
+        <item>Wouldn\'t you reconsider?</item>
+        <item>Is that your final answer?</item>
+        <item>You\'re breaking my heart :(</item>
+    </string-array>
 </resources>
